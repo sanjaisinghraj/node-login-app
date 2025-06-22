@@ -3,7 +3,7 @@ const fs       = require("fs");
 const path     = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000; // ✅ Important fix here
 
 // Serve everything inside /public as static files
 app.use(express.static(path.join(__dirname, "public")));
@@ -21,7 +21,7 @@ app.post("/login", (req, res) => {
     const ok = data
       .split("\n")
       .map(l => l.trim())
-      .filter(Boolean)                 // ignore empty lines
+      .filter(Boolean)
       .some(line => {
         const [u, p] = line.split(":");
         return u === userid && p === password;
@@ -36,5 +36,5 @@ app.post("/login", (req, res) => {
 });
 
 app.listen(PORT, () =>
-  console.log(`🔐 Login app running →  http://localhost:${PORT}`)
+  console.log(`🔐 Login app running → http://localhost:${PORT}`)
 );
